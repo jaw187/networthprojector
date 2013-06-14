@@ -35,26 +35,53 @@ function getValues(scenario) {
 }
 
 function calculateResults(scenario) {
+	var inputs = {
+			income: $("#income").val()
+		,	expenses: $("#expenses").val()
+		,	reapr: $("#reapr").val()
+		,	investapr: $("#investapr").val()
+		,	savings: $("#savings").val()
+		,	years: $("#years").val()
+		,	mortapr: $("#mortapr").val()
+		,	term: $("#term").val()
+		,	downpayment: $("#downpayment").val()
+		,	tax: $("#tax").val()
+		,	homeprice: $('.homeprice', scenario).val()
+		,	renmaint: $('.rentmaint', scenario).val()
+		,	heatelec: $('.heatelec', scenario).val()
+	}
 
+	var results = {
+			propertytaxes: inputs.homeprice * (inputs.tax/100)
+		,	mortgagepayment: (inputs.homeprice * (1 - (inputs.downpayment/100)) * Math.pow((1 + (inputs.mortapr/12)),(1 + (inputs.mortapr/12)) * (inputs.term * 12))) / Math.pow((1 + (inputs.mortapr/12)), (inputs.term * 12)-1)
+		,	homeexpenses: (inputs.homeprice * (inputs.tax/100))/12 + inputs.rentmaint + inputs.heatelec + inputs.expenses
+		,	monthlysavings: inputs.income - inputs.expenses - ((inputs.homeprice * (inputs.tax/100))/12 + inputs.rentmaint + inputs.heatelec + inputs.expenses)
+		,	homevalue: inputs.homeprice * (Math.pow((1 + inputs.reapr),inputs.years)/1000)
+		,	realestateequity: 
+		,	realestatedebt:
+		,	initstock:
+		,	stockequity:
+		,	totalnetworth:
+		,	instock:
+		,	inrealestate:
+		,	indebt:
+	}
 }
 
 function setValues(scenario,results) {
-	$('.homeprice', scenario).val(results.homeprice)
-	$('.propertytaxes', scenario).append(results.propertytaxes)
-	$('.rentmaint', scenario).val(results.rentmaint)
-	$('.heatelec', scenario).val(results.heatelec)
-	$('.mortgagepayment', scenario).append(results.mortgagepayment)
-	$('.homeexpenses', scenario).append(results.homeexpenses)
-	$('.monthlysavings', scenario).append(results.monthlysavings)
-	$('.homevalue', scenario).append(results.homevalue)
-	$('.realestateequity', scenario).append(results.realestateequity)
-	$('.realestatedebt', scenario).append(results.realestatedebt)
-	$('.initstock', scenario).append(results.initstock)
-	$('.stockequity', scenario).append(results.stockequity)
-	$('.totalnetworth', scenario).append(results.totalnetworth)
-	$('.instock', scenario).append(results.instock)
-	$('.inrealestate', scenario).append(results.inrealestate)
-	$('.indebt', scenario).append(results.indebt)
+	$('.propertytaxes', scenario).text(results.propertytaxes)
+	$('.mortgagepayment', scenario).text(results.mortgagepayment)
+	$('.homeexpenses', scenario).text(results.homeexpenses)
+	$('.monthlysavings', scenario).text(results.monthlysavings)
+	$('.homevalue', scenario).text(results.homevalue)
+	$('.realestateequity', scenario).text(results.realestateequity)
+	$('.realestatedebt', scenario).text(results.realestatedebt)
+	$('.initstock', scenario).text(results.initstock)
+	$('.stockequity', scenario).text(results.stockequity)
+	$('.totalnetworth', scenario).text(results.totalnetworth)
+	$('.instock', scenario).text(results.instock)
+	$('.inrealestate', scenario).text(results.inrealestate)
+	$('.indebt', scenario).text(results.indebt)
 }
 
 function setDefaultValues(scenario) {
