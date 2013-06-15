@@ -1,13 +1,16 @@
 var inputsliders;
 
 $(function () {
-	var defaultScenario = addScenario();
-
-//	setDefaultValues(defaultScenario);
+	function updateVisualizations(results) {
+		setRawDataFeedValues(results);
+		/////////////////////
+		// Add your function for updating visualizations
+		/////////////////////
+	}
 
 	function slidecb(event,ui) {
 		$($(this).next()).text($(this).slider('option','value'));
-		setValues(calculateResults());
+		updateVisualizations(calculateResults());
 	}
 
 	 inputsliders = [
@@ -26,14 +29,16 @@ $(function () {
 		,	{ name: 'heatelec', text: 'Heat and Electric', options: { range: 'min', min: 0, max:1000, value: 200, slide: slidecb }  }
 	]
 
-$('.ui-slider-handle').height(500) 
-
 	var sliders = $('.sliders');
 	for (var i = 0; i < inputsliders.length; i++) {
 		inputsliders[i].obj = buildInputSlider(inputsliders[i],sliders);
 	}
 
-	setValues(calculateResults());
+	/////////////////////
+	// Initialize Visualizations
+	/////////////////////
+	buildRawDataFeed();
+	updateVisualizations(calculateResults());
 })
 
 function buildInputSlider(i,p) {
@@ -50,11 +55,6 @@ function buildInputSlider(i,p) {
 	$(p).append(obj.valuedisplay);
 
 	return obj;
-}
-
-function addScenario() {
-	var scenario = buildScenarioRow();
-	return scenario;
 }
 
 function calculateResults() {
@@ -83,43 +83,4 @@ function calculateResults() {
 	results.indebt = 100 * results.realestatedebt / (results.totalnetworth);
 
 	return results;
-}
-
-function setValues(results) {
-	$('.propertytaxes').text(Math.round(results.propertytaxes))
-	$('.mortgagepayment').text(Math.round(results.mortgagepayment))
-	$('.homeexpenses').text(Math.round(results.homeexpenses))
-	$('.monthlysavings').text(Math.round(results.monthlysavings))
-	$('.homevalue').text(Math.round(results.homevalue))
-	$('.realestateequity').text(Math.round(results.realestateequity))
-	$('.realestatedebt').text(Math.round(results.realestatedebt))
-	$('.initstock').text(Math.round(results.initstock))
-	$('.stockequity').text(Math.round(results.stockequity))
-	$('.totalnetworth').text(Math.round(results.totalnetworth))
-	$('.instock').text(Math.round(results.instock))
-	$('.inrealestate').text(Math.round(results.inrealestate))
-	$('.indebt').text(Math.round(results.indebt))
-}
-
-function buildScenarioRow() {
-	var row = document.createElement("tr");
-
-	$(row).append($(document.createElement("td")).addClass("propertytaxes"));
-	$(row).append($(document.createElement("td")).addClass("mortgagepayment"));
-	$(row).append($(document.createElement("td")).addClass("homeexpenses"));
-	$(row).append($(document.createElement("td")).addClass("monthlysavings"));
-	$(row).append($(document.createElement("td")).addClass("homevalue"));
-	$(row).append($(document.createElement("td")).addClass("realestateequity"));
-	$(row).append($(document.createElement("td")).addClass("realestatedebt"));
-	$('#rawdatatable1 tbody').append(row);
-
-	row = document.createElement("tr");
-	$(row).append($(document.createElement("td")).addClass("initstock"));
-	$(row).append($(document.createElement("td")).addClass("stockequity"));
-	$(row).append($(document.createElement("td")).addClass("totalnetworth"));
-	$(row).append($(document.createElement("td")).addClass("instock"));
-	$(row).append($(document.createElement("td")).addClass("inrealestate"));
-	$(row).append($(document.createElement("td")).addClass("indebt"));
-
-	$('#rawdatatable2 tbody').append(row);
 }
