@@ -1,83 +1,83 @@
 <html>
- 	<head>
-		<title>Net Worth Projector</title>
+   <head>
+    <title>Net Worth Projector</title>
 
-		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css" />
-		<link rel="stylesheet" href="http://code.jquery.com/ui/jquery-ui-git.css" />
-		<link rel="stylesheet" href="networthprojector.css" />
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/jquery-ui-git.css" />
+    <link rel="stylesheet" href="networthprojector.css" />
 
-		<link href='http://fonts.googleapis.com/css?family=Alef:400,700' rel='stylesheet' type='text/css'>
-	</head>
-	<body>
-		<div class="content pure-g-r">
-		    <div class="header pure-u-1">
-		        <div id="topheader" class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
-		            <a class="pure-menu-heading" href="">Net Worth Projector</a>
+    <link href='http://fonts.googleapis.com/css?family=Alef:400,700' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class="content pure-g-r">
+        <div class="header pure-u-1">
+            <div id="topheader" class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
+                <a class="pure-menu-heading" href="">Net Worth Projector</a>
 
-		            <ul>
-		                <li><a class="pure-menu-selected" href="#raw">Raw Data</a></li>
-		            </ul>
-		        </div>
-		    </div>
-		    <div class="pure-u-1">
-		    	<div class="projector pure-g-r">
-		    		<div class="pure-u-1-4">
-		    			<div id="inputs" class="pure-menu pure-menu-open pure-menu-vertical">
-			    			<form class="pure-form">
-			    				<fieldset class="sliders">
-					    			
-				    			</fieldset>
-				    		</form>
-				    	</div>
-		    		</div>
-		    		<div class="pure-u-1-24"></div>
-		    		<div class="visualizations pure-u-2-3">
-		    			<h1>Raw Data Feed</h1>
-				    	<table id="rawdatatable1" class="rawdatatable pure-table">
-							<thead class="scenariosheader">
-								<tr>
-									<th style="font-size: 30%">Property Taxes</th>
-									<th>Mortgage Payment</th>
-									<th>Home Expenses</th>
-									<th>Monthly Savings</th>
-									<th>Home Value</th>
-									<th>Real Estate Equity</th>
-									<th>Real Estate Debt</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
-						<table id="rawdatatable2" class="rawdatatable pure-table">
-							<thead>
-								<tr>
-									<th>Init Stock</th>
-									<th>Stock Equity</th>
-									<th>Total Net Worth </th>
-									<th>In Stock (%)</th>
-									<th>In Real Estate (%)</th>
-									<th>In Debt(%)</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+                <ul>
+                    <li><a class="pure-menu-selected" href="#raw">Raw Data</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pure-u-1">
+          <div class="projector pure-g-r">
+            <div class="pure-u-1-4">
+              <div id="inputs" class="pure-menu pure-menu-open pure-menu-vertical">
+                <form class="pure-form">
+                  <fieldset class="sliders">
+                    
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+            <div class="pure-u-1-24"></div>
+            <div class="visualizations pure-u-2-3">
+              <h1>Raw Data Feed</h1>
+              <table id="rawdatatable1" class="rawdatatable pure-table">
+              <thead class="scenariosheader">
+                <tr>
+                  <th style="font-size: 30%">Property Taxes</th>
+                  <th>Mortgage Payment</th>
+                  <th>Home Expenses</th>
+                  <th>Monthly Savings</th>
+                  <th>Home Value</th>
+                  <th>Real Estate Equity</th>
+                  <th>Real Estate Debt</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            <table id="rawdatatable2" class="rawdatatable pure-table">
+              <thead>
+                <tr>
+                  <th>Init Stock</th>
+                  <th>Stock Equity</th>
+                  <th>Total Net Worth </th>
+                  <th>In Stock (%)</th>
+                  <th>In Real Estate (%)</th>
+                  <th>In Debt(%)</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
 <!--
-	######## Add your visualization here
-						<h1>Some Other Visualization</h1>
-						<img src="http://i.stack.imgur.com/O3Hst.png" />
+  ######## Add your visualization here
+            <h1>Some Other Visualization</h1>
+            <img src="http://i.stack.imgur.com/O3Hst.png" />
 
-						<h1>Different Visualization</h1>
-						<img src="http://blog.ezyang.com/img/hpd3js.png" />
+            <h1>Different Visualization</h1>
+            <img src="http://blog.ezyang.com/img/hpd3js.png" />
 -->
-		    		</div>
-		    	</div>
-		    </div>
-		</div>
-		<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-		<script src="http://code.jquery.com/ui/jquery-ui-git.js"></script>
-		<script src="networthprojector.js"></script>
-		<!-- ########## Vizualization Modules ############# -->
-		<script src="rawdatafeed.js"></script>
-	</body>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script src="http://code.jquery.com/ui/jquery-ui-git.js"></script>
+    <script src="networthprojector.js"></script>
+    <!-- ########## Vizualization Modules ############# -->
+    <script src="rawdatafeed.js"></script>
+  </body>
 </html>

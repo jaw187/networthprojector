@@ -3,63 +3,63 @@ div.projector {
 }
 
 table.rawdatatable th {
-	font-size: 60%;
+  font-size: 60%;
 }
 
 table.rawdatatable {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 div.addscenario {
-	margin: 1em 0;
-	text-align: center;
+  margin: 1em 0;
+  text-align: center;
 }
 
 div.value {
-	text-align: center;
-	margin-bottom: 1em;
+  text-align: center;
+  margin-bottom: 1em;
 }
 
 div.slider { 
-	height: .2em;
+  height: .2em;
 }
 
 div.inputs {
 }
 
 div#topheader {
-	background: rgb(37, 42, 58);
-	color: #0F4;
+  background: rgb(37, 42, 58);
+  color: #0F4;
 }
 
 div#topheader a.pure-menu-heading {
-	color: #0F4;
+  color: #0F4;
 }
 
 body {
-	font-family: 'Alef';
+  font-family: 'Alef';
 }
 
 .pure-menu a {
-	color: #CF0;
+  color: #CF0;
 }
 
 .pure-menu-selected {
-	background: rgb(55,62,84);
+  background: rgb(55,62,84);
 }
 
 div#topheader a:hover {
-	background: #666;
+  background: #666;
 }
 
 #inputs .ui-slider .ui-slider-handle {
-	height: 0.6em;
-	width: 1.2em;
-	padding: 0;
-	top: -.2em;
+  height: 0.6em;
+  width: 1.2em;
+  padding: 0;
+  top: -.2em;
 }
 
 #inputs {
-	border: none;
+  border: none;
 }
 
