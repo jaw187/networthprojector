@@ -1,136 +1,119 @@
-/*
-
-results = {
-	HomePrice
-	PropertyTaxes
-	Rent/Maint	
-	Heat/Electric	
-	MortgagePayment	
-	HomeExpenses	
-	MonthlySavings	
-	HomeValue (k)	
-	RealEstateEquity (k)	
-	RealEstateDebt (k)	
-	InitStock	
-	Stock Equity (k)	
-	TotalNetWorth (mil)	
-	InStock (%)	
-	InReal Estate (%)	
-	InDebt(%)
-}
-
-*/
+var inputsliders;
 
 $(function () {
-	setDefaultValues(addScenario());
+	var defaultScenario = addScenario();
+
+//	setDefaultValues(defaultScenario);
+
+	function slidecb(event,ui) {
+		$($(this).next()).text($(this).slider('option','value'));
+		setValues(calculateResults());
+	}
+
+	 inputsliders = [
+			{ name: 'income', text: 'Takehome Income', options: { range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
+		,	{ name: 'expenses', text: 'Expenses', options: { range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
+		,	{ name: 'reapr', text: 'Real Estate APR', options: { step: .001, range: 'min', min: 0, max:.1, value: .05, slide: slidecb }  }
+		,	{ name: 'investapr', text: 'Investments APR', options: { step: .001, range: 'min', min: 0, max:.15, value: .07, slide: slidecb }  }
+		,	{ name: 'savings', text: 'Initial Savings', options: { range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
+		,	{ name: 'years', text: 'Years To Project Out', options: { range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
+		,	{ name: 'mortapr', text: 'Mortgage APR', options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
+		,	{ name: 'term', text: 'Mortgage Term', options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
+		,	{ name: 'downpayment', text: 'Mortgage Downpayment', options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
+		,	{ name: 'tax', text: 'Property Tax', options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
+		,	{ name: 'homeprice', text: 'Home Price', options: { range: 'min', min: 0, max:1000000, value: 100000, slide: slidecb }  }
+		,	{ name: 'rentmaint', text: 'Rent or Maintenance', options: { range: 'min', min: 0, max:10000, value: 200, slide: slidecb }  }
+		,	{ name: 'heatelec', text: 'Heat and Electric', options: { range: 'min', min: 0, max:1000, value: 200, slide: slidecb }  }
+	]
+
+$('.ui-slider-handle').height(500) 
+
+	var sliders = $('.sliders');
+	for (var i = 0; i < inputsliders.length; i++) {
+		inputsliders[i].obj = buildInputSlider(inputsliders[i],sliders);
+	}
+
+	setValues(calculateResults());
 })
+
+function buildInputSlider(i,p) {
+	var obj = {
+		label: $($(document.createElement('label')).attr('for',i.name)).text(i.text) ,
+		slider:$($(document.createElement('div')).addClass('slider')).attr('id',i.name) ,
+		valuedisplay: $($(document.createElement('div')).addClass('value')).text(i.options.value)
+	}
+
+	$(obj.slider).slider(i.options);
+
+	$(p).append(obj.label);
+	$(p).append(obj.slider);
+	$(p).append(obj.valuedisplay);
+
+	return obj;
+}
 
 function addScenario() {
 	var scenario = buildScenarioRow();
 	return scenario;
 }
 
-function getValues(scenario) {
+function calculateResults() {
+	var inputs = {};
 
-}
-
-function calculateResults(scenario) {
-	var inputs = {
-			income: $("#income").val()
-		,	expenses: $("#expenses").val()
-		,	reapr: $("#reapr").val()
-		,	investapr: $("#investapr").val()
-		,	savings: $("#savings").val()
-		,	years: $("#years").val()
-		,	mortapr: $("#mortapr").val()
-		,	term: $("#term").val()
-		,	downpayment: $("#downpayment").val()
-		,	tax: $("#tax").val()
-		,	homeprice: $('.homeprice', scenario).val()
-		,	renmaint: $('.rentmaint', scenario).val()
-		,	heatelec: $('.heatelec', scenario).val()
+	for (var i = 0; i < inputsliders.length; i++) {
+		inputs[inputsliders[i].name] = $(inputsliders[i].obj.slider).slider('option','value');
 	}
 
-	var results = {
-			propertytaxes: inputs.homeprice * (inputs.tax/100)
-		,	mortgagepayment: (inputs.homeprice * (1 - (inputs.downpayment/100)) * Math.pow((1 + (inputs.mortapr/12)),(1 + (inputs.mortapr/12)) * (inputs.term * 12))) / Math.pow((1 + (inputs.mortapr/12)), (inputs.term * 12)-1)
-		,	homeexpenses: (inputs.homeprice * (inputs.tax/100))/12 + inputs.rentmaint + inputs.heatelec + inputs.expenses
-		,	monthlysavings: inputs.income - inputs.expenses - ((inputs.homeprice * (inputs.tax/100))/12 + inputs.rentmaint + inputs.heatelec + inputs.expenses)
-		,	homevalue: inputs.homeprice * (Math.pow((1 + inputs.reapr),inputs.years)/1000)
-		,	realestateequity: 
-		,	realestatedebt:
-		,	initstock:
-		,	stockequity:
-		,	totalnetworth:
-		,	instock:
-		,	inrealestate:
-		,	indebt:
-	}
+	 monthlymortapr = inputs.mortapr/12
+	  , numofmortpayments = inputs.term * 12
+	  , results = {};
+
+	results.propertytaxes = inputs.homeprice * inputs.tax;
+	results.mortgagepayment =  inputs.homeprice * (1 - inputs.downpayment) * Math.pow((1 + monthlymortapr),numofmortpayments) * monthlymortapr / (Math.pow((1 + monthlymortapr), numofmortpayments) - 1);
+	results.homeexpenses = (results.propertytaxes/12) + inputs.rentmaint + inputs.heatelec + results.mortgagepayment;
+	results.monthlysavings =  inputs.income - inputs.expenses - results.homeexpenses;
+	results.homevalue =  inputs.homeprice * (Math.pow((1 + inputs.reapr),inputs.years));
+	results.realestatedebt = ((inputs.homeprice * (1 - inputs.downpayment) * Math.pow(1 + inputs.mortapr, inputs.years)) - (results.mortgagepayment * 12 * (Math.pow((1 + inputs.mortapr),inputs.years) - 1) / inputs.mortapr));
+	results.realestateequity = results.homevalue - results.realestatedebt;
+	results.initstock = inputs.savings - inputs.downpayment * inputs.homeprice;
+	results.stockequity = (results.initstock * Math.pow((1 + inputs.investapr), inputs.years) + Math.max(0,results.monthlysavings) * 12 * (Math.pow(1 + inputs.investapr,(inputs.years + 1)) - (1 + inputs.investapr)) / inputs.investapr);
+	results.totalnetworth = (results.realestateequity + results.stockequity);
+	results.instock = 100 * results.stockequity / (results.totalnetworth);
+	results.inrealestate = 100 * results.realestateequity / (results.totalnetworth);
+	results.indebt = 100 * results.realestatedebt / (results.totalnetworth);
+
+	return results;
 }
 
-function setValues(scenario,results) {
-	$('.propertytaxes', scenario).text(results.propertytaxes)
-	$('.mortgagepayment', scenario).text(results.mortgagepayment)
-	$('.homeexpenses', scenario).text(results.homeexpenses)
-	$('.monthlysavings', scenario).text(results.monthlysavings)
-	$('.homevalue', scenario).text(results.homevalue)
-	$('.realestateequity', scenario).text(results.realestateequity)
-	$('.realestatedebt', scenario).text(results.realestatedebt)
-	$('.initstock', scenario).text(results.initstock)
-	$('.stockequity', scenario).text(results.stockequity)
-	$('.totalnetworth', scenario).text(results.totalnetworth)
-	$('.instock', scenario).text(results.instock)
-	$('.inrealestate', scenario).text(results.inrealestate)
-	$('.indebt', scenario).text(results.indebt)
-}
-
-function setDefaultValues(scenario) {
-	$("#income").val(7000)
-	$("#expenses").val(2000);
-	$("#reapr").val(5);
-	$("#investapr").val(7);
-	$("#savings").val(50000);
-	$("#years").val(20);
-	$("#mortapr").val(3.875);
-	$("#term").val(30);
-	$("#downpayment").val(12);
-	$("#tax").val(2);
-
-	$('.homeprice', scenario).val(100000)
-	$('.rentmaint', scenario).val(200)
-	$('.heatelec', scenario).val(200)
-}
-
-function buildInputField(which,d) {
-	var form = $(document.createElement("form")).addClass("pure-form pure-g")
-	  , div = $(document.createElement("div")).addClass("pure-u-1")
-	  , input = $($(document.createElement("input")).addClass("pure-input-1")).addClass(which);
-
-	$(d).append($(form).append($(div).append(input)));
+function setValues(results) {
+	$('.propertytaxes').text(Math.round(results.propertytaxes))
+	$('.mortgagepayment').text(Math.round(results.mortgagepayment))
+	$('.homeexpenses').text(Math.round(results.homeexpenses))
+	$('.monthlysavings').text(Math.round(results.monthlysavings))
+	$('.homevalue').text(Math.round(results.homevalue))
+	$('.realestateequity').text(Math.round(results.realestateequity))
+	$('.realestatedebt').text(Math.round(results.realestatedebt))
+	$('.initstock').text(Math.round(results.initstock))
+	$('.stockequity').text(Math.round(results.stockequity))
+	$('.totalnetworth').text(Math.round(results.totalnetworth))
+	$('.instock').text(Math.round(results.instock))
+	$('.inrealestate').text(Math.round(results.inrealestate))
+	$('.indebt').text(Math.round(results.indebt))
 }
 
 function buildScenarioRow() {
 	var row = document.createElement("tr");
 
-	var homepricetd = document.createElement("td");
-	buildInputField('homeprice',homepricetd);
-	$(row).append(homepricetd); 
-
 	$(row).append($(document.createElement("td")).addClass("propertytaxes"));
-
-	var rentmainttd = document.createElement("td");
-	buildInputField('rentmaint',rentmainttd);
-	$(row).append(rentmainttd);
-
-	var heatelectd = document.createElement("td");
-	buildInputField('heatelec',heatelectd);
-	$(row).append(heatelectd);
-
 	$(row).append($(document.createElement("td")).addClass("mortgagepayment"));
 	$(row).append($(document.createElement("td")).addClass("homeexpenses"));
 	$(row).append($(document.createElement("td")).addClass("monthlysavings"));
 	$(row).append($(document.createElement("td")).addClass("homevalue"));
 	$(row).append($(document.createElement("td")).addClass("realestateequity"));
+	$(row).append($(document.createElement("td")).addClass("realestatedebt"));
+	$('#rawdatatable1 tbody').append(row);
+
+	row = document.createElement("tr");
 	$(row).append($(document.createElement("td")).addClass("initstock"));
 	$(row).append($(document.createElement("td")).addClass("stockequity"));
 	$(row).append($(document.createElement("td")).addClass("totalnetworth"));
@@ -138,7 +121,5 @@ function buildScenarioRow() {
 	$(row).append($(document.createElement("td")).addClass("inrealestate"));
 	$(row).append($(document.createElement("td")).addClass("indebt"));
 
-	$('tbody.scenarios').append(row);
-
-	return row;
+	$('#rawdatatable2 tbody').append(row);
 }
