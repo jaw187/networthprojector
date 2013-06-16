@@ -2,10 +2,14 @@ var inputsliders;
 
 $(function () {
   function updateVisualizations(results) {
-    setRawDataFeedValues(results);
     /////////////////////
     // Add your function for updating visualizations
     /////////////////////
+    
+    setRawDataFeedValues(results[results.length - 1]);
+
+    sbg.set(results)
+    sbg.update()
   }
 
   function slidecb(event,ui) {
@@ -37,8 +41,15 @@ $(function () {
   /////////////////////
   // Initialize Visualizations
   /////////////////////
+  var r = calculateResults();
+
   buildRawDataFeed();
-  updateVisualizations(calculateResults());
+
+  var sbg = stackedBarGraph();
+  sbg.set(r)
+  sbg.build();
+
+  updateVisualizations(r);
 })
 
 function buildInputSlider(i,p) {
@@ -66,21 +77,33 @@ function calculateResults() {
 
    monthlymortapr = inputs.mortapr/12
     , numofmortpayments = inputs.term * 12
-    , results = {};
+    , results = [];
 
-  results.propertytaxes = inputs.homeprice * inputs.tax;
-  results.mortgagepayment =  inputs.homeprice * (1 - inputs.downpayment) * Math.pow((1 + monthlymortapr),numofmortpayments) * monthlymortapr / (Math.pow((1 + monthlymortapr), numofmortpayments) - 1);
-  results.homeexpenses = (results.propertytaxes/12) + inputs.rentmaint + inputs.heatelec + results.mortgagepayment;
-  results.monthlysavings =  inputs.income - inputs.expenses - results.homeexpenses;
-  results.homevalue =  inputs.homeprice * (Math.pow((1 + inputs.reapr),inputs.years));
-  results.realestatedebt = ((inputs.homeprice * (1 - inputs.downpayment) * Math.pow(1 + inputs.mortapr, inputs.years)) - (results.mortgagepayment * 12 * (Math.pow((1 + inputs.mortapr),inputs.years) - 1) / inputs.mortapr));
-  results.realestateequity = results.homevalue - results.realestatedebt;
-  results.initstock = inputs.savings - inputs.downpayment * inputs.homeprice;
-  results.stockequity = (results.initstock * Math.pow((1 + inputs.investapr), inputs.years) + Math.max(0,results.monthlysavings) * 12 * (Math.pow(1 + inputs.investapr,(inputs.years + 1)) - (1 + inputs.investapr)) / inputs.investapr);
-  results.totalnetworth = (results.realestateequity + results.stockequity);
-  results.instock = 100 * results.stockequity / (results.totalnetworth);
-  results.inrealestate = 100 * results.realestateequity / (results.totalnetworth);
-  results.indebt = 100 * results.realestatedebt / (results.totalnetworth);
+  var n = inputs.years;
+
+  for (var i=0; i < n; i++) {
+    inputs.years = i + 1;
+
+    results[i] = {};
+
+    results[i].propertytaxes = inputs.homeprice * inputs.tax;
+    results[i].mortgagepayment =  inputs.homeprice * (1 - inputs.downpayment) * Math.pow((1 + monthlymortapr),numofmortpayments) * monthlymortapr / (Math.pow((1 + monthlymortapr), numofmortpayments) - 1);
+    results[i].homeexpenses = (results[i].propertytaxes/12) + inputs.rentmaint + inputs.heatelec + results[i].mortgagepayment;
+    results[i].monthlysavings =  inputs.income - inputs.expenses - results[i].homeexpenses;
+    results[i].homevalue =  inputs.homeprice * (Math.pow((1 + inputs.reapr),inputs.years));
+    results[i].realestatedebt = ((inputs.homeprice * (1 - inputs.downpayment) * Math.pow(1 + inputs.mortapr, inputs.years)) - (results[i].mortgagepayment * 12 * (Math.pow((1 + inputs.mortapr),inputs.years) - 1) / inputs.mortapr));
+    results[i].realestateequity = results[i].homevalue - results[i].realestatedebt;
+    results[i].initstock = inputs.savings - inputs.downpayment * inputs.homeprice;
+    results[i].stockequity = (results[i].initstock * Math.pow((1 + inputs.investapr), inputs.years) + Math.max(0,results[i].monthlysavings) * 12 * (Math.pow(1 + inputs.investapr,(inputs.years + 1)) - (1 + inputs.investapr)) / inputs.investapr);
+    results[i].totalnetworth = (results[i].realestateequity + results[i].stockequity);
+    results[i].instock = 100 * results[i].stockequity / (results[i].totalnetworth);
+    results[i].inrealestate = 100 * results[i].realestateequity / (results[i].totalnetworth);
+    results[i].indebt = 100 * results[i].realestatedebt / (results[i].totalnetworth);
+
+    console.log(results[i])
+  }
+
+  
 
   return results;
 }
