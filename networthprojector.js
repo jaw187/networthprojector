@@ -100,7 +100,7 @@ function calculateResults() {
     results[i].inrealestate = 100 * results[i].realestateequity / (results[i].totalnetworth);
     results[i].indebt = 100 * results[i].realestatedebt / (results[i].totalnetworth);
 
-    console.log(results[i])
+    //console.log(results[i])
   }
 
   

@@ -1,6 +1,7 @@
 function stackedBarGraph() {
   var numOfLayers, numOfSamples, stack, layers, yGroupMax, yStackMax, margin, width, height, x, y, color, xAxis,
-      svg, layer, rect;
+      svg, layer, rect,
+      transition;
 
   //Hack to toggle through groups
   // investments, realestateequity, realestatedebt
@@ -9,7 +10,7 @@ function stackedBarGraph() {
   //build/reset object to hold all of our data
   //add data to object
   var data;
-  function setData = function (results) {
+  function setData (results) {
     numOfSamples = results.length;
 
     data = {
@@ -19,9 +20,9 @@ function stackedBarGraph() {
     }
     
     for (var i = 0; i < results.length; i++) {
-        sbg.data.investments.push(results[i].stockequity)
-        sbg.data.realestateequity.push(results[i].realestateequity)
-        sbg.data.realestatedebt.push(results[i].realestatedebt)
+      data.investments.push(results[i].stockequity)
+      data.realestateequity.push(results[i].realestateequity)
+      data.realestatedebt.push(results[i].realestatedebt)
     }
   }
 
@@ -31,7 +32,7 @@ function stackedBarGraph() {
     which = 'investments'
 
     //Recreate layers with current data
-    layers = stack(d3.range(n).map(function() { return bumpLayer(m, .1); }))
+    layers = stack(d3.range(numOfLayers).map(function() { return bumpLayer(); }))
 
     //Add layers data to each layer
     layer.data(layers);
@@ -42,20 +43,26 @@ function stackedBarGraph() {
 
     x.domain(d3.range(numOfSamples))
 
-    var xAxis = d3.svg.axis()
+    xAxis = d3.svg.axis()
         .scale(x)
         .tickSize(0)
         .tickPadding(6)
         .orient("bottom");
 
-    //stacked or grouped?
-    /*
+    d3.select("#sbgxaxis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
 
-    if (stacked) transitionStacked();
-    else transitionGrouped();
+    /* rect = layer.selectAll("rect")
+      .data(function(d) { return d; })
+      .enter().append("rect")
+      .attr("x", function(d) { return x(d.x); })
+      .attr("y", height)
+      .attr("width", x.rangeBand())
+      .attr("height", 0); */
 
-    */
-    transitionStacked()
+    //transition the new graph
+    transition();
   }
 
   /////////////////////////////
@@ -76,7 +83,7 @@ function stackedBarGraph() {
 
     // Establish 
     margin = {top: 40, right: 10, bottom: 20, left: 10},
-    width = 960 - margin.left - margin.right,
+    width = 760 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
     x = d3.scale.ordinal()
@@ -89,13 +96,19 @@ function stackedBarGraph() {
 
     color = d3.scale.linear()
         .domain([0, numOfLayers - 1])
-        .range(["#aad", "#556"]);
+        .range(["#4B7553", "#AE4E43"]);
 
     xAxis = d3.svg.axis()
         .scale(x)
         .tickSize(0)
         .tickPadding(6)
         .orient("bottom");
+
+    yAxis = d3.svg.axis()
+        .scale(y)
+        .tickSize(0)
+        .tickPadding(6)
+        .orient("right");
 
     //where to append visualization to
     //change to div
@@ -126,8 +139,15 @@ function stackedBarGraph() {
 
   svg.append("g")
       .attr("class", "x axis")
+      .attr("id", "sbgxaxis")
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .attr("id", "sbgyaxis")
+      .attr("transform", "translate(0,0)")
+      .call(yAxis);
 
     //updated this to be more specific
     d3.selectAll("form#stackedtoggle input").on("change", change);
@@ -140,8 +160,14 @@ function stackedBarGraph() {
     function transitionGrouped() {
       y.domain([0, yGroupMax]);
 
+      yAxis = d3.svg.axis()
+          .scale(y)
+          .tickSize(0)
+          .tickPadding(6)
+          .orient("right");
+
       rect.transition()
-          .duration(500)
+          //.duration(30)
           .delay(function(d, i) { return i * 10; })
           .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
           .attr("width", x.rangeBand() / n)
@@ -153,14 +179,33 @@ function stackedBarGraph() {
     function transitionStacked() {
       y.domain([0, yStackMax]);
 
+      yAxis = d3.svg.axis()
+          .scale(y)
+          .tickSize(0)
+          .tickPadding(6)
+          .orient("right");
+
+      d3.select("#sbgyaxis")
+          .attr("transform", "translate(0,0)")
+          .call(yAxis);
+
       rect.transition()
-          .duration(500)
+          //.duration(30)
           .delay(function(d, i) { return i * 10; })
           .attr("y", function(d) { return y(d.y0 + d.y); })
           .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
         .transition()
           .attr("x", function(d) { return x(d.x); })
           .attr("width", x.rangeBand());
+    }
+
+    transition = function () {
+      /*
+      if (stacked) transitionStacked();
+      else transitionGrouped();
+      */
+
+      transitionStacked();
     }
   }
 
