@@ -63,3 +63,15 @@ div#topheader a:hover {
   border: none;
 }
 
+rect {
+    background-color: red;
+    color: red;
+    fill: red;
+    stroke-width:1;
+    margin: 0;
+    padding: 0px;
+    stroke: darkred;
+}
+rect.stockColumn {
+    fill: blue;
+}
