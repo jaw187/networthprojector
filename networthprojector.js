@@ -2,9 +2,9 @@ var inputsliders;
 var ts_stock, ts_re;
 var inputs, results;
 
-var barchart_width = 500;
-var barchart_height = 500;
-var barchart_margin = 25;
+var barchart_width = 600;
+var barchart_height = 600;
+var barchart_margin = 100;
 var bar_margin = 3;
 
 var barchart_x;
@@ -69,8 +69,39 @@ function buildBarChart() {
 	var chart = d3.select("#barchart_container").append("svg")
         .attr("id", "barchart")
         .attr("width", barchart_width)
-        .attr("height", barchart_height);
-    
+        .attr("height", barchart_height);    
+        
+	x = d3.scale.ordinal()
+        .domain(d3.range(inputs.years+1))
+        .rangeRoundBands([0, barchart_width-2*barchart_margin], .08);
+        
+    y = d3.scale.linear()
+    	.domain([results.totalnetworth,0])
+    	.rangeRound([0,barchart_height-(barchart_margin*2)])
+
+    xAxis = d3.svg.axis()
+        .scale(x)
+        .tickSize(1)
+        .tickPadding(0)
+        .orient("bottom");
+
+    yAxis = d3.svg.axis()
+        .scale(y)
+        .tickSize(0)
+        .tickPadding(6)
+        .orient("right");
+        
+    chart.append("g")
+      .attr("class", "x axis")
+      .attr("id", "sbgxaxis")
+      .attr("transform", "translate("+barchart_margin+"," + (barchart_height-barchart_margin) + ")")
+      .call(xAxis);
+      
+    chart.append("g")
+      .attr("class", "y axis")
+      .attr("id", "sbgyaxis")
+      .attr("transform", "translate("+(barchart_width-barchart_margin)+","+barchart_margin+")")
+      .call(yAxis);
 
     chart.selectAll("stockColumn")
         .data(ts_stock)
