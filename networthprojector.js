@@ -73,11 +73,11 @@ function buildBarChart() {
         
 	x = d3.scale.ordinal()
         .domain(d3.range(inputs.years+1))
-        .rangeRoundBands([0, barchart_width-2*barchart_margin], .08);
+        .rangeRoundBands([0, barchart_width-2*barchart_margin],0);
         
     y = d3.scale.linear()
     	.domain([results.totalnetworth,0])
-    	.rangeRound([0,barchart_height-(barchart_margin*2)])
+    	.rangeRound([0,barchart_height-(barchart_margin*2)]);
 
     xAxis = d3.svg.axis()
         .scale(x)
