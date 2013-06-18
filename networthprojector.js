@@ -4,7 +4,9 @@ var inputs, results;
 
 var barchart_width = 600;
 var barchart_height = 600;
-var barchart_margin = 100;
+var barchart_margin = 20;
+var barchart_margin_right = 100;
+var barchart_margin_bottom = 50;
 var bar_margin = 3;
 
 var barchart_x;
@@ -26,17 +28,17 @@ $(function () {
   }
 
    inputsliders = [
-      { name: 'income', text: 'Takehome Income', options: { range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
-    ,  { name: 'expenses', text: 'Expenses', options: { range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
+       { name: 'savings', text: 'Initial Savings', options: { step: 1000, range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
+    ,  { name: 'income', text: 'Takehome Income', options: { step: 500, range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
+    ,  { name: 'expenses', text: 'Expenses', options: { step: 500, range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
+    ,  { name: 'years', text: 'Years To Project Out', options: { range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
     ,  { name: 'reapr', text: 'Real Estate APR', options: { step: .001, range: 'min', min: 0, max:.1, value: .05, slide: slidecb }  }
     ,  { name: 'investapr', text: 'Investments APR', options: { step: .001, range: 'min', min: 0, max:.15, value: .07, slide: slidecb }  }
-    ,  { name: 'savings', text: 'Initial Savings', options: { range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
-    ,  { name: 'years', text: 'Years To Project Out', options: { range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
-    ,  { name: 'mortapr', text: 'Mortgage APR', options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
-    ,  { name: 'term', text: 'Mortgage Term', options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
-    ,  { name: 'downpayment', text: 'Mortgage Downpayment', options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
-    ,  { name: 'tax', text: 'Property Tax', options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
     ,  { name: 'homeprice', text: 'Home Price', options: { range: 'min', min: 0, max:1000000, value: 100000, slide: slidecb }  }
+    ,  { name: 'mortapr', text: 'Mortgage APR', options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
+    ,  { name: 'downpayment', text: 'Mortgage Downpayment', options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
+    ,  { name: 'term', text: 'Mortgage Term', options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
+    ,  { name: 'tax', text: 'Property Tax', options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
     ,  { name: 'rentmaint', text: 'Rent or Maintenance', options: { range: 'min', min: 0, max:10000, value: 200, slide: slidecb }  }
     ,  { name: 'heatelec', text: 'Heat and Electric', options: { range: 'min', min: 0, max:1000, value: 200, slide: slidecb }  }
   ]
@@ -54,14 +56,14 @@ $(function () {
   buildBarChart();
 })
 function buildBarChart() {
-	bar_width = ((barchart_width-(2*barchart_margin))/(inputs.years+1))-(2*bar_margin);
+	bar_width = ((barchart_width-(barchart_margin + barchart_margin_right))/(inputs.years+1))-(2*bar_margin);
 	barchart_x = d3.scale.linear()
     	.domain([0, 1])
     	.range([barchart_margin, barchart_margin+bar_width+(2*bar_margin)]);
     
 	barchart_y = d3.scale.linear()
     	.domain([0, results.totalnetworth])
-		.rangeRound([0,barchart_height-(barchart_margin*2)]);
+		.rangeRound([0,barchart_height-(barchart_margin+barchart_margin_bottom)]);
 		
 	console.log("bar_width = "+bar_width);
 	d3.select("#barchart").remove();
@@ -73,11 +75,11 @@ function buildBarChart() {
         
 	x = d3.scale.ordinal()
         .domain(d3.range(inputs.years+1))
-        .rangeRoundBands([0, barchart_width-2*barchart_margin],0);
+        .rangeRoundBands([0, barchart_width-(barchart_margin+barchart_margin_right)],0);
         
     y = d3.scale.linear()
     	.domain([results.totalnetworth,0])
-    	.rangeRound([0,barchart_height-(barchart_margin*2)]);
+    	.rangeRound([0,barchart_height-(barchart_margin+barchart_margin_bottom)]);
 
     xAxis = d3.svg.axis()
         .scale(x)
@@ -94,14 +96,27 @@ function buildBarChart() {
     chart.append("g")
       .attr("class", "x axis")
       .attr("id", "sbgxaxis")
-      .attr("transform", "translate("+barchart_margin+"," + (barchart_height-barchart_margin) + ")")
+      .attr("transform", "translate("+barchart_margin+"," + (barchart_height-barchart_margin_bottom) + ")")
       .call(xAxis);
       
     chart.append("g")
       .attr("class", "y axis")
       .attr("id", "sbgyaxis")
-      .attr("transform", "translate("+(barchart_width-barchart_margin)+","+barchart_margin+")")
+      .attr("transform", "translate("+(barchart_width-barchart_margin_right)+","+barchart_margin+")")
       .call(yAxis);
+      
+    chart.select("#sbgyaxis")
+    	.append("text")
+    	.attr("class", "sbgyaxislabel")
+    	.text("Dollars")
+    	.attr("transform","rotate(270,0,0) translate("+(-barchart_width/2)+","+barchart_margin_right+")"); 
+    	
+    chart.select("#sbgxaxis")
+    	.append("text")
+    	.attr("class", "sbgxaxislabel")
+    	.text("Years")
+    	.attr("x", (barchart_width-barchart_margin_right)/2)
+    	.attr("y", (barchart_margin_bottom*(3/4)));    	
 
     chart.selectAll("stockColumn")
         .data(ts_stock)
@@ -134,7 +149,7 @@ function updateBarChart() {
             return barchart_y(d);
         })
         .attr("y", function (d,i) {
-            return barchart_height - barchart_margin - barchart_y(d+ts_re[i]);
+            return barchart_height - barchart_margin_bottom - barchart_y(d+ts_re[i]);
         });
      d3.select("#barchart")
         .selectAll(".realestateColumn")
@@ -143,7 +158,7 @@ function updateBarChart() {
             return barchart_y(d);
         })
         .attr("y", function (d,i) {
-            return barchart_height - barchart_margin - barchart_y(d);
+            return barchart_height - barchart_margin_bottom - barchart_y(d);
         });
     
     console.log("updateBarChart() exit");
