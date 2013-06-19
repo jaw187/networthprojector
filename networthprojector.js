@@ -39,26 +39,35 @@ $(function () {
     updateVisualizations(calculateResults());
   }
 
+  inputgroups = [
+      { name: 'asdf', text: 'This is the ASDF group', toggle: false}
+    , { name: 'qwer', text: 'Los Qwerty', toggle: false}
+    , { name: 'toggle', text: 'Toggle This', toggle: {/*ToggleOptions*/}}
+    , { name: 'ghgh', text: 'Bacon Ipsulum'}
+  ];
+
    inputsliders = [
-       { name: 'savings', text: 'Initial Savings', options: { step: 1000, range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
-    ,  { name: 'income', text: 'Takehome Income', options: { step: 500, range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
-    ,  { name: 'expenses', text: 'Expenses', options: { step: 500, range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
-    ,  { name: 'years', text: 'Years To Project Out', options: { range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
-    ,  { name: 'reapr', text: 'Real Estate APR', options: { step: .001, range: 'min', min: 0, max:.1, value: .05, slide: slidecb }  }
-    ,  { name: 'investapr', text: 'Investments APR', options: { step: .001, range: 'min', min: 0, max:.15, value: .07, slide: slidecb }  }
-    ,  { name: 'homeprice', text: 'Home Price', options: { range: 'min', min: 0, max:1000000, value: 100000, slide: slidecb }  }
-    ,  { name: 'mortapr', text: 'Mortgage APR', options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
-    ,  { name: 'downpayment', text: 'Mortgage Downpayment', options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
-    ,  { name: 'term', text: 'Mortgage Term', options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
-    ,  { name: 'tax', text: 'Property Tax', options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
-    ,  { name: 'rentmaint', text: 'Rent or Maintenance', options: { range: 'min', min: 0, max:10000, value: 200, slide: slidecb }  }
-    ,  { name: 'heatelec', text: 'Heat and Electric', options: { range: 'min', min: 0, max:1000, value: 200, slide: slidecb }  }
+       { name: 'savings', text: 'Initial Savings', group: 0, options: { step: 1000, range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
+    ,  { name: 'income', text: 'Takehome Income', group: 0, options: { step: 500, range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
+    ,  { name: 'expenses', text: 'Expenses', group: 0, options: { step: 500, range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
+    ,  { name: 'years', text: 'Years To Project Out', group: 0, options: { range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
+    ,  { name: 'reapr', text: 'Real Estate APR', group: 1, options: { step: .001, range: 'min', min: 0, max:.1, value: .05, slide: slidecb }  }
+    ,  { name: 'investapr', text: 'Investments APR', group: 1, options: { step: .001, range: 'min', min: 0, max:.15, value: .07, slide: slidecb }  }
+    ,  { name: 'homeprice', text: 'Home Price', group: 2, options: { range: 'min', min: 0, max:1000000, value: 100000, slide: slidecb }  }
+    ,  { name: 'mortapr', text: 'Mortgage APR', group: 2, options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
+    ,  { name: 'downpayment', text: 'Mortgage Downpayment', group: 2, options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
+    ,  { name: 'term', text: 'Mortgage Term', group: 3, options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
+    ,  { name: 'tax', text: 'Property Tax', group: 3, options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
+    ,  { name: 'rentmaint', text: 'Rent or Maintenance', group: 3, options: { range: 'min', min: 0, max:10000, value: 200, slide: slidecb }  }
+    ,  { name: 'heatelec', text: 'Heat and Electric', group: 3, options: { range: 'min', min: 0, max:1000, value: 200, slide: slidecb }  }
   ]
 
-  var sliders = $('.sliders');
-  for (var i = 0; i < inputsliders.length; i++) {
-    inputsliders[i].obj = buildInputSlider(inputsliders[i],sliders);
-  }
+  //Build Input Sliders and group them
+  var r = calculateResults();
+
+  buildRawDataFeed();
+  buildBarChart();
+  updateVisualizations(r);
 
   /////////////////////
   // Initialize Visualizations
@@ -67,6 +76,43 @@ $(function () {
   updateVisualizations(calculateResults());
   buildBarChart();
 })
+
+function buildInputSlider(i) {
+  var obj = {
+    i: i,
+    label: $($(document.createElement('label')).attr('for',i.name)).text(i.text) ,
+    slider:$($(document.createElement('div')).addClass('slider')).attr('id',i.name) ,
+    valuedisplay: $($(document.createElement('div')).addClass('value')).text(i.options.value)
+  }
+  
+  $(obj.slider).slider(i.options);
+  
+  return obj;
+}
+
+function buildGroupsObj() {
+
+  for (var i = 0; i < inputgroups.length; i++) {
+    //Is Toggled?
+
+    //create input groups object and append it 
+    inputgroups[i].obj = $(document.createElement('div')).addClass("inputgroup")
+    var fieldset = document.createElement("fieldset");
+    
+    //loop through sliders to find members
+    for (var j = 0; j < inputsliders.length; j++) {
+      if (inputsliders[j].group === i) {
+        console.log("ASDF")
+        $(fieldset).append(inputsliders[j].obj.label).append(inputsliders[j].obj.slider).append(inputsliders[j].obj.valuedisplay)
+      }
+    }
+
+    $(inputgroups[i].obj).append(fieldset);
+    
+    $('.sliders').append(inputgroups[i].obj);
+  }
+}
+
 function buildBarChart() {
 	bar_width = ((barchart_width-(barchart_margin + barchart_margin_right))/(inputs.years+1))-(2*bar_margin);
 	barchart_x = d3.scale.linear()
