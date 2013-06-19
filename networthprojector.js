@@ -15,6 +15,18 @@ var barchart_y;
 
 $(function () {
   function updateVisualizations(results) {
+    if (results.bankrupt) {
+	    console.log("bankrupt")
+	    $("#barchart_container").hide();
+	    $("#piechart_container").hide();
+	    $(".bankruptcy").show();
+	    return;
+    } else {
+    	$("#barchart_container").show();
+	    $("#piechart_container").show();
+	    $(".bankruptcy").hide();
+    }
+    
     setRawDataFeedValues(results);
     /////////////////////
     // Add your function for updating visualizations
@@ -65,7 +77,6 @@ function buildBarChart() {
     	.domain([0, results.totalnetworth])
 		.rangeRound([0,barchart_height-(barchart_margin+barchart_margin_bottom)]);
 		
-	console.log("bar_width = "+bar_width);
 	d3.select("#barchart").remove();
 			
 	var chart = d3.select("#barchart_container").append("svg")
@@ -140,8 +151,6 @@ function buildBarChart() {
     updateBarChart();
 }
 function updateBarChart() {
-    console.log("updateBarChart()");
-
     d3.select("#barchart")
         .selectAll(".stockColumn")
         .data(ts_stock)
@@ -160,8 +169,6 @@ function updateBarChart() {
         .attr("y", function (d,i) {
             return barchart_height - barchart_margin_bottom - barchart_y(d);
         });
-    
-    console.log("updateBarChart() exit");
 }
 function buildInputSlider(i,p) {
   var obj = {
@@ -189,11 +196,19 @@ function calculateResults() {
    monthlymortapr = inputs.mortapr/12
     , numofmortpayments = inputs.term * 12
     , results = {};
-
+  
+  results.bankrupt = false;
+  results.bankrupt = ((inputs.downpayment * inputs.homeprice) > inputs.savings);
+  if(results.bankrupt){ return results; }
+  
   results.propertytaxes = inputs.homeprice * inputs.tax;
   results.mortgagepayment =  inputs.homeprice * (1 - inputs.downpayment) * Math.pow((1 + monthlymortapr),numofmortpayments) * monthlymortapr / (Math.pow((1 + monthlymortapr), numofmortpayments) - 1);
   results.homeexpenses = (results.propertytaxes/12) + inputs.rentmaint + inputs.heatelec + results.mortgagepayment;
   results.monthlysavings =  inputs.income - inputs.expenses - results.homeexpenses;
+  
+  results.bankrupt = (results.monthlysavings < 0);
+  if(results.bankrupt){ return results; }
+  
   results.homevalue =  calculateRealEstateValue(inputs.years);
   results.realestatedebt = calculateRealEstateDebt(inputs.years);
   results.realestateequity = results.homevalue - results.realestatedebt;
@@ -216,8 +231,6 @@ function populateBarChartData() {
 		ts_stock[i] = calculateStockEquity(i);
 		ts_re[i] = calculateRealEstateValue(i) - calculateRealEstateDebt(i)
 	}	
-	console.log(ts_re);
-	console.log(ts_stock);
 }
 function calculateStockEquity(years) {
   return (results.initstock * Math.pow((1 + inputs.investapr), years) + Math.max(0,results.monthlysavings) * 12 * (Math.pow(1 + inputs.investapr,(years + 1)) - (1 + inputs.investapr)) / inputs.investapr);	
