@@ -24,50 +24,46 @@
             <div class="pure-u-1-4">
               <div id="inputs" class="pure-menu pure-menu-open pure-menu-vertical">
                 <form class="pure-form">
-                  <fieldset class="sliders">
-                    
-                  </fieldset>
+                  <div class="inputgroups sliders"></div>                   
                 </form>
               </div>
             </div>
             <div class="pure-u-1-24"></div>
-            <div class="visualizations pure-u-2-3">
-				<h1>Bar Chart</h1>
-	            <div id="barchart_container">
-	            </div>
-	            <h1>Pie Chart</h1>
-	            <img src="http://blog.ezyang.com/img/hpd3js.png" />
-	            </div>
-              <h1>Raw Data Feed</h1>
-              <table id="rawdatatable1" class="rawdatatable pure-table">
-              <thead class="scenariosheader">
-                <tr>
-                  <th style="font-size: 30%">Property Taxes</th>
-                  <th>Mortgage Payment</th>
-                  <th>Home Expenses</th>
-                  <th>Monthly Savings</th>
-                  <th>Home Value</th>
-                  <th>Real Estate Equity</th>
-                  <th>Real Estate Debt</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-            <table id="rawdatatable2" class="rawdatatable pure-table">
-              <thead>
-                <tr>
-                  <th>Init Stock</th>
-                  <th>Stock Equity</th>
-                  <th>Total Net Worth </th>
-                  <th>In Stock (%)</th>
-                  <th>In Real Estate (%)</th>
-                  <th>In Debt(%)</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+              <div class="visualizations pure-u-2-3">
+				        <h1>Bar Chart</h1>
+	              <div id="barchart_container">
+	              </div>
+	              <h1>Pie Chart</h1>
+	              <img src="http://blog.ezyang.com/img/hpd3js.png" />
+	              
+                <h1>Raw Data Feed</h1>
+                <table id="rawdatatable1" class="rawdatatable pure-table">
+                  <thead class="scenariosheader">
+                    <tr>
+                      <th style="font-size: 30%">Property Taxes</th>
+                      <th>Mortgage Payment</th>
+                      <th>Home Expenses</th>
+                      <th>Monthly Savings</th>
+                      <th>Home Value</th>
+                      <th>Real Estate Equity</th>
+                      <th>Real Estate Debt</th>
+                    </tr>
+                  </thead>
+                <tbody></tbody>
+              </table>
+              <table id="rawdatatable2" class="rawdatatable pure-table">
+                <thead>
+                  <tr>
+                    <th>Init Stock</th>
+                    <th>Stock Equity</th>
+                    <th>Total Net Worth </th>
+                    <th>In Stock (%)</th>
+                    <th>In Real Estate (%)</th>
+                    <th>In Debt(%)</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
           </div>
         </div>
     </div>
@@ -77,6 +73,6 @@
     <script src="networthprojector.js"></script>
     <!-- ########## Vizualization Modules ############# -->
     <script src="rawdatafeed.js"></script>
-    <script src="stackedbargraph.js"></script>
+    <script src="stackedbarchart.js"></script>
   </body>
 </html>
