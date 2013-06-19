@@ -24,12 +24,20 @@ div.slider {
   height: .2em;
 }
 
-div.inputs {
+div#inputs {
+  overflow: scroll;
+  height: 600px;
 }
 
 div#topheader {
   background: rgb(37, 42, 58);
   color: #0F4;
+  z-index: 1024;
+}
+
+div.visualizations {
+  overflow: scroll;
+  height: 600px;
 }
 
 div#topheader a.pure-menu-heading {
@@ -74,4 +82,8 @@ rect {
 }
 rect.stockColumn {
     fill: blue;
+}
+
+.inputheader {
+  margin-bottom: .25em
 }
