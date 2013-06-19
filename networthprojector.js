@@ -62,7 +62,12 @@ $(function () {
     ,  { name: 'heatelec', text: 'Heat and Electric', group: 3, options: { range: 'min', min: 0, max:1000, value: 200, slide: slidecb }  }
   ]
 
-  //Build Input Sliders and group them
+   //Build Input Sliders and group them
+  for (var i = 0; i < inputsliders.length; i++) {
+    inputsliders[i].obj = buildInputSlider(inputsliders[i]);
+  }
+  buildGroupsObj();
+  
   var r = calculateResults();
 
   buildRawDataFeed();
@@ -216,26 +221,48 @@ function updateBarChart() {
             return barchart_height - barchart_margin_bottom - barchart_y(d);
         });
 }
-function buildInputSlider(i,p) {
+
+function buildInputSlider(i) {
   var obj = {
+    i: i,
     label: $($(document.createElement('label')).attr('for',i.name)).text(i.text) ,
     slider:$($(document.createElement('div')).addClass('slider')).attr('id',i.name) ,
     valuedisplay: $($(document.createElement('div')).addClass('value')).text(i.options.value)
   }
-
+  
   $(obj.slider).slider(i.options);
-
-  $(p).append(obj.label);
-  $(p).append(obj.slider);
-  $(p).append(obj.valuedisplay);
-
+  
   return obj;
+}
+
+function buildGroupsObj() {
+
+  for (var i = 0; i < inputgroups.length; i++) {
+    //Is Toggled?
+
+    //create input groups object and append it 
+    inputgroups[i].obj = $(document.createElement('div')).addClass("inputgroup")
+    var fieldset = document.createElement("fieldset");
+    
+    //loop through sliders to find members
+    for (var j = 0; j < inputsliders.length; j++) {
+      if (inputsliders[j].group === i) {
+        console.log("ASDF")
+        $(fieldset).append(inputsliders[j].obj.label).append(inputsliders[j].obj.slider).append(inputsliders[j].obj.valuedisplay)
+      }
+    }
+
+    $(inputgroups[i].obj).append(fieldset);
+    
+    $('.sliders').append(inputgroups[i].obj);
+  }
 }
 
 function calculateResults() {
   inputs = {};
 
   for (var i = 0; i < inputsliders.length; i++) {
+    console.log(i)
     inputs[inputsliders[i].name] = $(inputsliders[i].obj.slider).slider('option','value');
   }
 
