@@ -1,6 +1,11 @@
+////////////////////
+// OPTIONS
+////////////////////
+
+var pieChart;
 
 // pie chart //
-function buildPieChart(){
+function buildPieChart(results){
 
   // create pichart object.. easily adjust configuration here
   pieChart = {
