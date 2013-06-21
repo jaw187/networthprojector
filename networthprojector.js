@@ -31,7 +31,7 @@ function netWorthProjector() {
     barchart.populate(r);
     barchart.build(r[r.length - 1].totalnetworth);
     
-    updatePieChart(r[r.length - 1]);
+    piechart.update(r[r.length - 1]);
   }
 
   function init() {
@@ -44,7 +44,7 @@ function netWorthProjector() {
     
     //barchart.build(r);
     
-    buildPieChart(r[r.length - 1]);
+    piechart.build(r[r.length - 1]);
     
     updateVisualizations(r);
   }
