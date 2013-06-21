@@ -130,4 +130,10 @@ var nwp = netWorthProjector();
 
 $(function () {
   nwp.init();
+
+  $('.headernavlink').on('click', function () {
+    $(this).parent().siblings().find('.headernavlink').removeClass('pure-menu-selected');
+
+    $(this).addClass('pure-menu-selected')
+  })
 })
