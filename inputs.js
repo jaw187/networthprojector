@@ -1,6 +1,6 @@
 function slidecb() {
   //Update text display
-  $($(this).next()).text($(this).slider('option','value'));
+  $($(this).next()).find('.value').val($(this).slider('option','value'));
   
   nwp.update(nwp.calculate());
 }
@@ -45,11 +45,18 @@ $(function () {
       i: i,
       label: $($(document.createElement('label')).attr('for',i.name)).text(i.text) ,
       slider:$($(document.createElement('div')).addClass('slider')).attr('id',i.name) ,
-      valuedisplay: $($(document.createElement('div')).addClass('value')).text(i.options.value)
+      valuedisplay: $($(document.createElement('input')).addClass('value')).attr('type','text').attr('value',i.options.value)
     }
     
     $(obj.slider).slider(i.options);
-    
+
+    $(obj.valuedisplay).on('change', function () {
+      //Value Input Change
+      //Should this be updated as every character changes?
+      //remove any non digits
+      $(this).parent().prev().slider("value",$(this).val());
+      nwp.update(nwp.calculate());
+    })    
     return obj;
   }
 
@@ -65,7 +72,7 @@ $(function () {
         $(toggleswitch).addClass('toggleswitch')
         $(toggleswitch).on('click', function() {
             $(this).parent().next().toggle()
-            inputgroups[i].toggle();
+            //inputgroups[i].toggle();
           })
 
         var container = document.createElement('div')
@@ -84,7 +91,8 @@ $(function () {
       //loop through sliders to find members
       for (var j = 0; j < inputsliders.length; j++) {
         if (inputsliders[j].group === i) {
-          $(fieldset).append(inputsliders[j].obj.label).append(inputsliders[j].obj.slider).append(inputsliders[j].obj.valuedisplay)
+          var valuecontainer = $(document.createElement('div')).addClass('valuecontainer').append(inputsliders[j].obj.valuedisplay);
+          $(fieldset).append(inputsliders[j].obj.label).append(inputsliders[j].obj.slider).append(valuecontainer)
         }
       }
 
