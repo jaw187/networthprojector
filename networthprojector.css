@@ -87,3 +87,11 @@ rect.stockColumn {
 .inputheader {
   margin-bottom: .25em
 }
+
+div.valuecontainer {
+  text-align: center;
+}
+
+input.value {
+
+}
