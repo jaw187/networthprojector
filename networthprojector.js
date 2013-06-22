@@ -60,7 +60,7 @@ function netWorthProjector() {
       , numofmortpayments = inputs.term * 12
       , results = [], bankrupt = false;
 
-    for (var i = 0; i < inputs['years']; i++) {
+    for (var i = 0; i <= inputs['years']; i++) {
       results[i] = {};
 
       results[i].bankrupt = false;

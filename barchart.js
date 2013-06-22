@@ -40,7 +40,7 @@ function barChart() {
       xAxis = d3.svg.axis()
           .scale(x)
           .tickSize(1)
-          .tickPadding(0)
+          .tickPadding(2)
           .orient("bottom");
 
       yAxis = d3.svg.axis()
