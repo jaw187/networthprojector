@@ -23,30 +23,80 @@
         </div>
         <div class="pure-u-1">
           <div class="projector pure-g-r">
-            <div class="pure-u-1-4">
-              <div id="inputs" class="pure-menu pure-menu-open pure-menu-vertical">
-                <form class="pure-form">
-                  <div class="sliders">
-                    
+            <div class="inputs pure-u-1">
+              <div class="pure-g-r">
+                <div id="aboutyou" class="inputgroup pure-u-1-5">
+                  <h5>About You</h5>
+                  <form class="pure-form pure-form-aligned">
+                    <fieldset>
+                      <div id="inputs-savings"></div>
+                      <div id="inputs-income"></div>
+                      <div id="inputs-expenses"></div>
+                    </fieldset>
+                  </form>
+                </div>
+                <div id="investmentperformance" class="inputgroup pure-u-1-5">
+                  <h5>Investment Performnance</h5>
+                  <form class="pure-form pure-form-aligned">
+                    <fieldset>
+                      <div id="inputs-reapr"></div>
+                      <div id="inputs-investapr"></div>
+                    </fieldset>
+                  </form>
+                </div>
+                <div id="abouthome" class="inputgroup pure-u-2-5">
+                  <h5>About Home</h5>
+                  <div class="pure-g-r">
+                    <div class="pure-u-5-12">
+                      <form class="pure-form pure-form-aligned">
+                        <fieldset>
+                          <div id="inputs-homeprice"></div>
+                          <div id="inputs-mortapr"></div>
+                          <div id="inputs-downpayment"></div>
+                          <div id="inputs-rent"></div>
+                        </fieldset>
+                      </form>
+                    </div>
+                    <div class="pure-u-5-12">
+                      <form class="pure-form pure-form-aligned">
+                        <fieldset>
+                          <div id="inputs-term"></div>
+                          <div id="inputs-tax"></div>
+                        </fieldset>
+                      </form>
+                    </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
-            <div class="pure-u-1-24"></div>
-            <div class="visualizations pure-u-2-3">
-                <a id="bar"></a>
-                <h1>Bar Chart</h1>
-                <div id="barchart_container">
-	            </div>
-	            <div class="bankruptcy" style="display: none;">
+            <div class="visualizations pure-u-1">
+              <div class="pure-g-r">
+                <div class="pure-u-1-4"></div>
+                <div class="pure-u-5-12">
+                  <form class="pure-form pure-form-aligned">
+                    <fieldset>
+                      <div id="inputs-years"></div>
+                    </fieldset>
+                  </form>
+                </div>
+                <div class="pure-u-1-4"></div>
+
+                <div class="pure-u-5-12">
+                  <a id="bar"></a>
+                  <div id="barchart_container"></div>
+                  <div class="bankruptcy" style="display: none;">
                     <img src="bankruptcy_monopoly.jpg"/>
-	            </div>
-              <a id="pie"></a>
-	            <h1>Pie Chart</h1>
-	            <div id="piechart_container"></div>
-	            <div class="bankruptcy" style="display: none;">
-	       	     <img src="bankruptcy.jpg" />
-	            </div>
+                  </div>
+                </div>
+                <div class="pure-u-5-12">
+                  <a id="pie"></a>
+                  <div id="piechart_container"></div>
+                  <div class="bankruptcy" style="display: none;">
+                    <img src="bankruptcy.jpg" />
+                  </div>
+                </div>
+              </div>
+            </div>
               <a id="raw"></a>
               <h1>Raw Data Feed</h1>
               <table id="rawdatatable1" class="rawdatatable pure-table">
