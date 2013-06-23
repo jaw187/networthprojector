@@ -1,7 +1,7 @@
 function barChart() {
 
-  var barchart_width = 600;
-  var barchart_height = 600;
+  var barchart_width = 400;
+  var barchart_height = 400;
   var barchart_margin = 20;
   var barchart_margin_right = 100;
   var barchart_margin_bottom = 50;

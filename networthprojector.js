@@ -76,7 +76,7 @@ function netWorthProjector() {
       
       results[i].mortgagepayment =  inputs.homeprice * (1 - inputs.downpayment) * Math.pow((1 + monthlymortapr),numofmortpayments) * monthlymortapr / (Math.pow((1 + monthlymortapr), numofmortpayments) - 1);
       
-      results[i].homeexpenses = (results[i].propertytaxes/12) + inputs.rentmaint + inputs.heatelec + results[i].mortgagepayment;
+      results[i].homeexpenses = (results[i].propertytaxes/12) + inputs.rent + results[i].mortgagepayment;
       
       results[i].monthlysavings =  inputs.income - inputs.expenses - results[i].homeexpenses;
       

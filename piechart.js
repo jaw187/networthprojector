@@ -17,7 +17,7 @@ function pieChart() {
       
       "layout": {
         "container":"piechart_container",
-        "width": 700,
+        "width": 500,
         "height": 450,
         "radius" : 0,
         "color" : d3.scale.category20()
