@@ -107,3 +107,7 @@ input.value {
 div#inputs-rent {
   display: none;
 }
+
+#barchartxaxis, #barchartyaxis, #piechartlegend {
+  font-size: 33%;
+}

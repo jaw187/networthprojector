@@ -91,8 +91,8 @@ function pieChart() {
         .append("text")
       //.attr("transform", function(d) { return "translate(" + pc.math.arc.centroid(d) + ")"; })
         .attr("dx", -(pcLayout.width/2))
-        .attr("dy", function(d,i){return ""+((160)+(+i * 30) )+""} )
-        .attr("font-size","28")
+        .attr("dy", function(d,i){return ""+((160)+(+i * 15) )+""} )
+        .attr("id","piechartlegened")
         .text(function(d) { return d.label + " : " + d3.round(+d.value,2) + "%"; })
         .attr("fill",function(d, i) { return pcLayout.color(i); })
         .on("mouseover",function(a,b){
