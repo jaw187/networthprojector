@@ -96,15 +96,9 @@ function pieChart() {
         .enter()
         .append("text")
       //.attr("transform", function(d) { return "translate(" + pc.math.arc.centroid(d) + ")"; })
-<<<<<<< HEAD
-        .attr("dx", -(pcLayout.width/2))
-        .attr("dy", function(d,i){return ""+((160)+(+i * 15) )+""} )
-        .attr("id","piechartlegened")
-=======
         .attr("dx", -24)
         .attr("dy", function(d,i){return ""+((-16)+(+i * 12) )+""} )
         .attr("id","piechartlegend")
->>>>>>> jaw1874
         .text(function(d) { return d.label + " : " + d3.round(+d.value,2) + "%"; })
         .attr("fill",function(d, i) { return pcLayout.color(i); })
         .on("mouseover",function(a,b){
