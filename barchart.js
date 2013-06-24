@@ -2,9 +2,15 @@ function barChart() {
 
   var barchart_width = 400;
   var barchart_height = 400;
+<<<<<<< HEAD
   var barchart_margin = 20;
   var barchart_margin_right = 58;
   var barchart_margin_bottom = 28;
+=======
+  var barchart_margin = 0;
+  var barchart_margin_right = 58;
+  var barchart_margin_bottom = 20;
+>>>>>>> jaw1874
   var bar_margin = 3;
 
   var barchart_x;

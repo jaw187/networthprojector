@@ -5,37 +5,26 @@ function slidecb() {
   nwp.update(nwp.calculate());
 }
 
-
 var inputsliders = [
-     { name: 'savings', text: 'Initial Savings', notoggle: false, options: { step: 1000, range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
-  ,  { name: 'income', text: 'Takehome Income', notoggle: false, options: { step: 500, range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
-  ,  { name: 'expenses', text: 'Expenses', notoggle: false, options: { step: 500, range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
-  ,  { name: 'years', text: 'Years To Project Out', notoggle: false, options: { range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
-  ,  { name: 'reapr', text: 'Real Estate APR', notoggle: false, options: { step: .001, range: 'min', min: 0, max:.1, value: .05, slide: slidecb }  }
-  ,  { name: 'investapr', text: 'Investments APR', notoggle: false, options: { step: .001, range: 'min', min: 0, max:.15, value: .07, slide: slidecb }  }
-  ,  { name: 'homeprice', text: 'Home Price', notoggle: true, options: { range: 'min', min: 0, max:1000000, value: 100000, slide: slidecb }  }
-  ,  { name: 'rent', text: 'Rent', notoggle: false, options: { range: 'min', min: 0, max:10000, value: 200, slide: slidecb }  }
-  ,  { name: 'mortapr', text: 'Mortgage APR', notoggle: false, options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
-  ,  { name: 'downpayment', text: 'Mortgage Downpayment', notoggle: false, options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
-  ,  { name: 'term', text: 'Mortgage Term', notoggle: false, options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
-  ,  { name: 'tax', text: 'Property Tax', notoggle: false, options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
+     { name: 'savings', text: 'Initial Savings', notaligned: false, options: { step: 1000, range: 'min', min: 0, max:1000000, value: 50000, slide: slidecb }  }
+  ,  { name: 'income', text: 'Takehome Income', notaligned: false, options: { step: 500, range: 'min', min: 0, max:20000, value: 7000, slide: slidecb } }
+  ,  { name: 'expenses', text: 'Expenses', notaligned: false, options: { step: 500, range: 'min', min: 0, max:20000, value: 2000, slide: slidecb }  }
+  ,  { name: 'years', text: 'Years', inputclass: 'pure-input-1', notaligned: true, options: { orientation: "vertical", range: 'min', min: 0, max:60, value: 20, slide: slidecb }  }
+  ,  { name: 'reapr', text: 'Real Estate APR', notaligned: false, options: { step: .001, range: 'min', min: 0, max:.1, value: .05, slide: slidecb }  }
+  ,  { name: 'investapr', text: 'Investments APR', notaligned: false, options: { step: .001, range: 'min', min: 0, max:.15, value: .07, slide: slidecb }  }
+  ,  { name: 'homeprice', text: 'Home Price', notaligned: false, options: { range: 'min', min: 0, max:1000000, value: 100000, slide: slidecb }  }
+  ,  { name: 'rent', text: 'Rent', notaligned: false, options: { range: 'min', min: 0, max:10000, value: 200, slide: slidecb }  }
+  ,  { name: 'mortapr', text: 'Mortgage APR', notaligned: false, options: { step: .0001, range: 'min', min: 0, max:.1, value: .03875, slide: slidecb }  }
+  ,  { name: 'downpayment', text: 'Mortgage Downpayment', notaligned: false, options: { step: .001, range: 'min', min: 0, max:1, value: .12, slide: slidecb }  }
+  ,  { name: 'term', text: 'Mortgage Term', notaligned: false, options: { range: 'min', min: 0, max:50, value: 30, slide: slidecb }  }
+  ,  { name: 'tax', text: 'Property Tax', notaligned: false, options: { step: .001, range: 'min', min: 0, max:.1, value: .02, slide: slidecb }  }
 ]
 
 
 $(function () {
   //INIT
 
-/*
-  //Build Input Sliders and group them
-  for (var i = 0; i < inputsliders.length; i++) {
-    inputsliders[i].obj = buildInputSlider(inputsliders[i]);
-  }
-  buildGroupsObj();
-*/
-
   function buildInputGroup(group) {
-    console.log(group)
-    //var container = $($(document.createElement('div')).addClass('inputgroup')).attr('id',group.id);
     
     var header = document.createElement('h5');
     $(header).addClass('inputheader');
@@ -58,11 +47,20 @@ $(function () {
   function buildInputSlider(i) {
     i.obj = {
       i: i,
-      container: $(document.createElement('div')).addClass('inputcontainer pure-control-group') ,
+      container: $(document.createElement('div')).addClass('inputcontainer') ,
       label: $($(document.createElement('label')).attr('for',i.name)).text(i.text) ,
       slider:$(document.createElement('div')).addClass('slider') ,
-      valuedisplay: $($(document.createElement('input')).addClass('value pure-input-1-3')).attr('id',i.name).attr('type','text').attr('value',i.options.value)
+      valuedisplay: $($(document.createElement('input')).addClass('value')).attr('id',i.name).attr('type','text').attr('value',i.options.value)
     }
+
+    if (i.inputclass) {
+      $(i.obj.valuedisplay).addClass(i.inputclass)
+    }
+    else {
+      $(i.obj.valuedisplay).addClass('pure-input-1-3')
+    }
+
+    if (!i.notaligned) $(i.obj.container).addClass('pure-control-group')
     
     $(i.obj.slider).slider(i.options);
 
@@ -84,5 +82,5 @@ $(function () {
 
     $("#inputs-" + inputsliders[i].name).append(inputsliders[i].obj.container).append(inputsliders[i].obj.slider)
   }
-})
 
+})
