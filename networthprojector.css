@@ -25,6 +25,14 @@ div.slider {
   margin: 0 2em 1em 2em;
 }
 
+div#inputs-years .slider{
+  height: 14em;
+}
+
+div#inputs-years input {
+  margin-bottom: 1em;
+}
+
 div.inputs {
   font-size: 33%;
 }
@@ -42,6 +50,7 @@ div#topheader {
 }
 
 div.visualizations {
+  margin-top: 1em
 }
 
 div#topheader a.pure-menu-heading {
@@ -49,11 +58,38 @@ div#topheader a.pure-menu-heading {
 }
 
 div.inputgroup {
-  margin-right: 1em
+  margin-right: 10em;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.33);
+  border-radius: 5px;
+  padding: 1em;
+}
+
+div#aboutyou {
+  background-color: #C1D3D4;
+  border: solid 3px #9BAEB3;
+}
+
+div.inputgroup h5 {
+  color: #666;
+}
+
+div.inputgroup label {
+  color: black;
+}
+
+div#investmentperformance {
+  background-color: #C3DBC5;
+  border: solid 3px #9BB39D;
+}
+
+div#abouthome {
+  background-color: #D9DBC3;
+  border: solid 3px #B3B59F;
 }
 
 body {
   font-family: 'Alef';
+  background: url(light_noise_diagonal.png);
 }
 
 .pure-menu a {
@@ -80,16 +116,14 @@ div#topheader a:hover {
 }
 
 rect {
-    background-color: red;
-    color: red;
-    fill: red;
+    fill: #CC0202;
     stroke-width:1;
     margin: 0;
     padding: 0px;
-    stroke: darkred;
+    stroke: #999;
 }
 rect.stockColumn {
-    fill: blue;
+    fill: #02A1D1;
 }
 
 .inputheader {
@@ -106,4 +140,8 @@ input.value {
 
 div#inputs-rent {
   display: none;
+}
+
+#barchartxaxis, #barchartyaxis, #piechartlegend {
+  font-size: 33%;
 }

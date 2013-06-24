@@ -2,9 +2,9 @@ function barChart() {
 
   var barchart_width = 400;
   var barchart_height = 400;
-  var barchart_margin = 20;
-  var barchart_margin_right = 100;
-  var barchart_margin_bottom = 50;
+  var barchart_margin = 0;
+  var barchart_margin_right = 58;
+  var barchart_margin_bottom = 20;
   var bar_margin = 3;
 
   var barchart_x;
@@ -51,23 +51,23 @@ function barChart() {
           
       chart.append("g")
         .attr("class", "x axis")
-        .attr("id", "sbgxaxis")
+        .attr("id", "barchartxaxis")
         .attr("transform", "translate("+barchart_margin+"," + (barchart_height-barchart_margin_bottom) + ")")
         .call(xAxis);
         
       chart.append("g")
         .attr("class", "y axis")
-        .attr("id", "sbgyaxis")
+        .attr("id", "barchartyaxis")
         .attr("transform", "translate("+(barchart_width-barchart_margin_right)+","+barchart_margin+")")
         .call(yAxis);
         
-      chart.select("#sbgyaxis")
+      chart.select("#barchartyaxis")
         .append("text")
         .attr("class", "sbgyaxislabel")
         .text("Dollars")
         .attr("transform","rotate(270,0,0) translate("+(-barchart_width/2)+","+barchart_margin_right+")"); 
         
-      chart.select("#sbgxaxis")
+      chart.select("#barchartxaxis")
         .append("text")
         .attr("class", "sbgxaxislabel")
         .text("Years")

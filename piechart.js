@@ -17,10 +17,15 @@ function pieChart() {
       
       "layout": {
         "container":"piechart_container",
-        "width": 500,
-        "height": 450,
-        "radius" : 0,
-        "color" : d3.scale.category20()
+        "radius" : 200,
+        "color" : function (i) {
+          var colors = ["#D6C64B", "#02A1D1", "#CC0202"];
+          if (i > -1 && i < colors.length) {
+            return colors[i];
+          }
+
+          return "#000";
+        }
       },
 
       "math":{
@@ -31,14 +36,15 @@ function pieChart() {
       "dom":{},
       "chart":{},
       "data":{}
-    },
+    }
+
+    pc.layout.width = pc.layout.radius * 2;
+    pc.layout.height = pc.layout.radius * 2;
     
     pcLayout = pc.layout,
     pcMath = pc.math,
     pcDom = pc.dom,
     pcChart = pc.chart;
-
-    pcLayout.radius = Math.min(pcLayout.width,pcLayout.height/2);
     
     pcMath.arc = d3.svg.arc()
                   .innerRadius(pcLayout.radius - 100)
@@ -61,7 +67,7 @@ function pieChart() {
     pcChart.path = pcDom.d_svg.datum(data).selectAll("path")
         .data(pcMath.pie)
       .enter().append("path")
-        .attr("fill", function(d, i) { return pcLayout.color(i); })
+        .attr("fill", function(d, i) { console.log("fill function",i); return pcLayout.color(i); })
         .attr("d", pcMath.arc)
         .on("mouseover",function(d,i){
 
@@ -69,7 +75,7 @@ function pieChart() {
           d3.select(this)
             .transition().attr({
               "stroke-width": 8,
-              "stroke":"red"
+              "stroke":"#999"
             })
             //promote svg
             
@@ -90,9 +96,9 @@ function pieChart() {
         .enter()
         .append("text")
       //.attr("transform", function(d) { return "translate(" + pc.math.arc.centroid(d) + ")"; })
-        .attr("dx", -(pcLayout.width/2))
-        .attr("dy", function(d,i){return ""+((160)+(+i * 30) )+""} )
-        .attr("font-size","28")
+        .attr("dx", -24)
+        .attr("dy", function(d,i){return ""+((-16)+(+i * 12) )+""} )
+        .attr("id","piechartlegend")
         .text(function(d) { return d.label + " : " + d3.round(+d.value,2) + "%"; })
         .attr("fill",function(d, i) { return pcLayout.color(i); })
         .on("mouseover",function(a,b){
