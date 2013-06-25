@@ -56,6 +56,12 @@ function netWorthProjector() {
       inputs[inputsliders[i].name] = $(inputsliders[i].obj.slider).slider('option','value');
     }
 
+    inputs.tax = inputs.tax/100;
+    inputs.mortapr = inputs.mortapr/100;
+    inputs.reapr = inputs.reapr/100;
+    inputs.investapr = inputs.investapr/100;
+    inputs.downpayment = inputs.downpayment/100;
+
     var monthlymortapr = inputs.mortapr/12
       , numofmortpayments = inputs.term * 12
       , results = [], bankrupt = false;
