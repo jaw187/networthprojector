@@ -142,4 +142,8 @@ $(function () {
 
     $(this).addClass('pure-menu-selected')
   })
+
+  $('.pure-form').on('submit', function () {
+    return false;
+  })
 })
